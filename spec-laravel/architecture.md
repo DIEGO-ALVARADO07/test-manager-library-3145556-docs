@@ -14,7 +14,7 @@ flowchart LR
       DOM["domain<br/>agregados y objetos de valor"]
     end
     subgraph Salida
-      DB["adapters/outbound/persistence<br/>(Eloquent + migraciones de Laravel)"]
+      DB["adapters/outbound/persistence<br/>(Query Builder + migraciones de Laravel)"]
       STO["adapters/outbound/storage<br/>portadas"]
       SEC["adapters/outbound/security<br/>hash y token"]
     end

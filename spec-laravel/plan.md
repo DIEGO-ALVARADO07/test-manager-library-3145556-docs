@@ -9,7 +9,7 @@ Cómo se construye lo que dicen [`spec.md`](spec.md) y [`constitution.md`](const
 |---|---|---|---|
 | D-01 | Lenguaje y runtime | PHP 8.3 / Laravel 13 | Stack del reto |
 | D-02 | Framework HTTP | Laravel (rutas de API y controladores) | Contrato en [`api-contract.md`](api-contract.md) |
-| D-03 | Persistencia | Eloquent + migraciones de Laravel sobre PostgreSQL 16 | El esquema es de las migraciones (ADR-001) |
+| D-03 | Persistencia | Query Builder de Laravel + migraciones sobre PostgreSQL 16 | El esquema es de las migraciones (ADR-001) |
 | D-04 | Concurrencia | Testigo de versión por libro + `CHECK` de rango ([ADR-002](adr/adr-002-concurrencia-optimista.md)) | Último ejemplar (RNF-2) |
 | D-05 | Fechas | Instantes UTC (`timestamptz`); el reloj es un puerto (`Clock`) | Probar vencimientos sin esperar 14 días |
 | D-06 | Reporte | Una consulta agregada por un puerto de lectura ([ADR-004](adr/adr-004-reporte-agregado-y-congelado.md)) | Estable y barato |
