@@ -60,11 +60,11 @@ Estado de cada tarea al cierre de la prueba, con la evidencia que se puede ejecu
 | T-17 | Hecha | `docker compose up` con base vacía migra, crea el admin desde el entorno y permite iniciar sesión (verificado con el sembrador) |
 | T-18 | Hecha | `api/database/migrations/2026_10_13_000003_add_remaining_check_constraints.php`; `SchemaTest.php` comprueba que el motor rechaza total 0 y rol desconocido; §4 de `data-model.md` actualizado |
 | T-19 | Hecha | `api/tests/Architecture/LayersTest.php` (Pest Arch). Se comprobó que falla: al añadir una referencia a `Illuminate` en el dominio el test responde «Expecting 'Library\Domain' not to use 'Illuminate'» |
-| T-20 | Hecha | `infra/docker-compose.yml`: `db` (postgres:16 vacío, sin scripts de inicio), `api` y `app`; `curl localhost:8000/api/v1/health` responde `ok` |
+| T-20 | Parcial | `infra/docker-compose.yml`: `db` (postgres:16 sin scripts de inicio), `api` y `app`; `curl localhost:8000/api/v1/health` responde `ok`. No se demostró con un volumen nuevo que la base arranque sin tablas antes de migrar |
 | T-21 | Hecha | `tool/seed/run-all.sh`: `/loans/overdue` devuelve **3** líneas, hay 15 préstamos y 19 filas en el reporte; RNF-1: con 5 000 libros la búsqueda tiene p95 de 78 ms |
-| T-22 | Hecha | Recorrido en navegador: login, catálogo y vencidos verificados contra la API real; el resto de pantallas está cubierto por los tests de la API |
+| T-22 | Parcial | Recorrido en navegador contra la API real: login, catálogo, vencidos y registrar un préstamo. Devolver y el reporte no se recorrieron en la interfaz. Las pantallas «Bibliotecarios» y la edición del catálogo con portadas vienen del plan de entrega, no de la lista de T-22 |
 | T-23 | Hecha | `page/index.html` abre sin backend y se revisó a 375 px y a 1280 px |
 
 Suite completa de `api`: 90 tests, 388 aserciones, todos en verde (`vendor/bin/pest`).
 
-Pendiente declarado: ejecutar los tests de T-07, T-08 y T-11 contra fakes, y auditar los logs para RNF-3.
+Pendiente declarado: ejecutar los tests de T-07, T-08 y T-11 contra fakes, auditar los logs para RNF-3, demostrar T-20 con un volumen nuevo y recorrer devolver y reporte en la interfaz (T-22).
