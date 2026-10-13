@@ -2,7 +2,7 @@
 
 De cada historia y criterio de aceptación a lo que lo implementa y a la prueba que lo comprueba. Rutas bajo `/api/v1`. Las clases viven en `api/src/` y los tests en `api/tests/`.
 
-Todos los criterios de esta tabla tienen un test que pasa. Un criterio sin test aparece en la sección final.
+Cada fila dice qué prueba la cubre. Las que no tienen test automático lo indican en la columna «Test» y se listan en la sección final.
 
 | HU / CA | Endpoint | Clase | Test | Estado |
 |---|---|---|---|---|
@@ -21,14 +21,14 @@ Todos los criterios de esta tabla tienen un test que pasa. Un criterio sin test 
 | CA-04.3 404 si no existe o está de baja | `GET /books/{id}` | `GetBookService` | `Contract/BooksTest` | Cumple |
 | HU-05 · CA-05.1 crear socio, documento único | `POST /members` | `CreateMemberService` | `Contract/LoansTest` | Cumple |
 | CA-05.2 listar y buscar | `GET /members`, `GET /members/{id}` | `SearchMembersService`, `GetMemberService` | `Contract/LoansTest` | Cumple |
-| CA-05.3 los socios no se eliminan | — (no hay ruta DELETE) | — | `Contract/AuthTest` — rutas inexistentes responden 404 | Cumple |
+| CA-05.3 los socios no se eliminan | — (no hay ruta DELETE) | — | Sin test automático: se comprueba leyendo `routes/api.php` | Cumple, sin test |
 | HU-06 · CA-06.1 1 a 3 líneas | `POST /loans` | `LendBooksService`, `Loan` | `Unit/LoanTest`, `Application/LendAndReturnTest` | Cumple |
 | CA-06.2 sin libro repetido | `POST /loans` | `Loan::addItem` | `Unit/LoanTest`, `Contract/LoansTest` | Cumple |
 | CA-06.3 descuenta 1 ejemplar; sin ejemplares no registra nada | `POST /loans` | `PgLoanRepository::saveLending` | `Contract/LoansTest`, `Concurrency/LastCopyTest` | Cumple |
 | CA-06.4 máximo 3 sin devolver, 422 con conteo | `POST /loans` | `LendingPolicy` | `Unit/LoanTest`, `Contract/LoansTest` | Cumple |
 | CA-06.5 socio con vencidos → 409 | `POST /loans` | `LendingPolicy` | `Unit/LoanTest`, `Contract/LoansTest` | Cumple |
 | CA-06.6 vence a 14 días, valores congelados | `POST /loans` | `Loan::addItem` | `Unit/LoanTest`, `Contract/LoansTest` | Cumple |
-| CA-06.7 inmutable | — (no hay PUT ni DELETE) | — | `Contract/AuthTest` | Cumple |
+| CA-06.7 inmutable | — (no hay PUT ni DELETE de préstamos) | — | Sin test automático: se comprueba leyendo `routes/api.php` | Cumple, sin test |
 | HU-07 · CA-07.1 devolver una línea | `POST /loans/{loan_id}/items/{item_id}/return` | `ReturnItemService` | `Contract/LoansTest`, `Application/LendAndReturnTest` | Cumple |
 | CA-07.2 devolver dos veces → 409, nunca suma dos veces | idem | `PgLoanRepository::saveReturn` | `Contract/LoansTest` | Cumple |
 | CA-07.3 disponibles nunca superan el total | idem | `Book::restock`, `ck_book_available_range` | `Unit/BookTest`, `Integration/SchemaTest` | Cumple |
@@ -50,4 +50,5 @@ Todos los criterios de esta tabla tienen un test que pasa. Un criterio sin test 
 
 ## Sin test automático
 
-- Recorrido completo de la interfaz (prestar, devolver, reporte): se verificó a mano login, catálogo y vencidos; el resto depende de los tests de la API.
+- CA-05.3 y CA-06.7: no existe la ruta para borrar socios ni para editar o borrar préstamos, pero ningún test lo verifica.
+- Interfaz: se recorrió a mano login, catálogo, vencidos y registrar un préstamo. Devolver y el reporte no se recorrieron en la interfaz; solo los cubren los tests de la API.
