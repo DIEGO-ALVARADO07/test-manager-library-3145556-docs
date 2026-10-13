@@ -32,7 +32,7 @@ Las flechas de dependencia apuntan **hacia adentro**. `bootstrap` es el único q
 src/
 ├── Domain/              # Book, Loan, LoanItem, Member, User; Isbn, Quantity, DateRange
 ├── Application/
-│   ├── Ports/Outbound/  # BookRepository, LoanRepository, MemberRepository, UserRepository,
+│   ├── Ports/           # BookRepository, LoanRepository, MemberRepository, UserRepository, CategoryReader,
 │   │                    # ReportReader, Clock, PasswordHasher, TokenIssuer, CoverStorage
 │   └── Services/        # LendBooksService, ReturnItemService, CreateBookService, SearchBooksService,
 │                        # OverdueService, MostBorrowedReportService, LoginService, CreateLibrarianService
