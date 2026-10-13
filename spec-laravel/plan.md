@@ -38,7 +38,7 @@ Cómo se construye lo que dicen [`spec.md`](spec.md) y [`constitution.md`](const
 | Aplicación | Casos de uso: prestar, devolver, reporte | Fakes de los puertos |
 | Integración | Repositorios y consulta del reporte | PostgreSQL real |
 | Contrato | Cuerpo de error único y códigos de estado | La API levantada |
-| Arquitectura | Artículos I, II y III | Deptrac y un test de Pest Arch en `tests/Architecture/` |
+| Arquitectura | Artículos I, II y III | Un test de Pest Arch en `tests/Architecture/` |
 | Concurrencia | Dos préstamos del último ejemplar | PostgreSQL real |
 
 ## 4. Orden de construcción

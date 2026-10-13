@@ -22,7 +22,7 @@ Solo cambia lo que el spec define sobre tecnología.
 | Persistencia y migraciones | SQLAlchemy + Alembic | EF Core | Migraciones de Laravel (SQL crudo donde hace falta) |
 | Hash de claves | Argon2id | BCrypt | Argon2id |
 | Pruebas | pytest | xUnit | Pest |
-| Pruebas de arquitectura | import-linter | NetArchTest | Deptrac y Pest Arch |
+| Pruebas de arquitectura | import-linter | NetArchTest | Pest Arch |
 
 ## Documentos añadidos en esta carpeta
 

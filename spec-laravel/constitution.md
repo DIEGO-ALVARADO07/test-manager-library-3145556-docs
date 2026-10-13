@@ -10,14 +10,14 @@ nadie puede comprobar es una intención. Un cambio que viole un artículo se rec
 `src/Domain/` no importa ningún otro módulo del proyecto ni librerías de terceros: solo la biblioteca estándar de PHP (`final readonly class`, `DateTimeImmutable`); ni Eloquent, ni Laravel (el espacio de nombres `Illuminate`), ni Carbon.
 
 **Por qué:** es lo único que permite probar las invariantes sin base de datos, sin servidor y sin contenedor, y cambiar de ORM sin tocar reglas.
-**Verificación:** Deptrac y un test de Pest Arch en `tests/Architecture/` prohíben que el dominio dependa de `application`, `adapters` o `bootstrap`.
+**Verificación:** Un test de Pest Arch en `tests/Architecture/` prohíbe que el dominio dependa de `application`, `adapters` o `bootstrap`.
 
 ## Artículo II — El núcleo declara sus puertos; el mundo los implementa
 
 La capa de aplicación solo conoce el dominio. Todo lo que necesita del exterior (repositorios, reloj, hash de claves, almacenamiento de
 portadas, generación de tokens) lo expresa como un **puerto que ella misma define**. Ningún tipo de framework o de ORM aparece en la firma de un puerto.
 
-**Verificación:** Deptrac y un test de Pest Arch en `tests/Architecture/` impiden que `application` importe `adapters`. Los tests de aplicación corren con fakes y sin referenciar `adapters`.
+**Verificación:** Un test de Pest Arch en `tests/Architecture/` impide que `application` importe `adapters`. Los tests de aplicación corren con fakes y sin referenciar `adapters`.
 
 ## Artículo III — Un único punto de composición
 
