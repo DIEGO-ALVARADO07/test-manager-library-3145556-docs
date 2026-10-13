@@ -51,4 +51,3 @@ Todos los criterios de esta tabla tienen un test que pasa. Un criterio sin test 
 ## Sin test automático
 
 - Recorrido completo de la interfaz (prestar, devolver, reporte): se verificó a mano login, catálogo y vencidos; el resto depende de los tests de la API.
-- Prueba de que Pest Arch falla ante una importación prohibida: ver `tasks.md`.
