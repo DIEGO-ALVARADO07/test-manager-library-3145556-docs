@@ -38,7 +38,8 @@ src/
 │                        # OverdueService, MostBorrowedReportService, LoginService, CreateLibrarianService
 ├── Adapters/
 │   ├── Inbound/Http/    # rutas/controladores, esquemas de petición, manejo de errores
-│   └── Outbound/        # Persistence/, Storage/, Security/
+│   ├── Inbound/Console/ # comando library:bootstrap-admin (D-10)
+│   └── Outbound/        # Persistence/, Storage/, Security/, Time/
 └── Bootstrap/Composition/   # src/Bootstrap/Composition/PortBindings.php — único punto de composición
 ```
 
