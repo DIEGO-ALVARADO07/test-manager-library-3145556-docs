@@ -30,6 +30,7 @@ Solo cambia lo que el spec define sobre tecnología.
 |---|---|
 | [`decisiones-y-huecos.md`](decisiones-y-huecos.md) | Huecos del spec y la decisión tomada en cada uno |
 | [`trazabilidad.md`](trazabilidad.md) | HU/CA → endpoint → clase → test → estado |
+| [`incongruencias-y-correcciones.md`](incongruencias-y-correcciones.md) | Incongruencias del spec, qué se hizo y cómo corregirlas sin cambiar el alcance |
 | [`adr/adr-005-testigo-de-concurrencia-sin-columna-version.md`](adr/adr-005-testigo-de-concurrencia-sin-columna-version.md) | Concurrencia sin columna de versión |
 | [`adr/adr-006-reloj-desplazable-para-el-sembrador.md`](adr/adr-006-reloj-desplazable-para-el-sembrador.md) | Reloj desplazable solo para la demo |
 | [`adr/adr-007-jwt-propio-en-vez-de-sanctum.md`](adr/adr-007-jwt-propio-en-vez-de-sanctum.md) | JWT propio |
