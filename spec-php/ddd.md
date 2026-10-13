@@ -84,18 +84,20 @@ Cada violación es una excepción propia en `Domain/Exceptions`; solo el adaptad
 | `InvalidValue` (objetos de valor y reglas de entrada) | `VALIDATION_ERROR` | 422 |
 | `NotFound` | `NOT_FOUND` | 404 |
 | `InvalidCredentials` | `INVALID_CREDENTIALS` | 401 |
+| `Forbidden` (lo lanza el middleware de rol) | `FORBIDDEN_ROLE` | 403 |
 
 ### 2.5 Repositorios y puertos
 
-Los define la capa de aplicación (Art. II). Ninguna firma menciona Eloquent ni `Illuminate`.
+Los define la capa de aplicación (Art. II). Ninguna firma menciona tipos del framework ni `Illuminate`. Los nombres son los del código en `src/Application/Ports/`.
 
 | Puerto | Responsabilidad |
 |---|---|
-| `BookRepository` | `find`, `findMany` (Q3), `search` (Q1), `save`, `existsActiveIsbn`, `hasOpenLoans` |
-| `LoanRepository` | `find`, `search` (Q6), `unreturnedItemsOfMember` (Q7), `overdueItems` (Q8), `saveLending` (préstamo + libros, una transacción), `saveReturn` |
-| `MemberRepository` | `find`, `search`, `save`, `existsDocument` |
-| `UserRepository` | `findByUsername` (Q10), `save` |
-| `ReportReader` | consulta agregada del reporte (Q9) |
+| `BookRepository` | `find` (Q2), `findMany` (Q3), `search` (Q1), `activeIsbnExists`, `hasOpenLoans`, `insert`, `update` (compare-and-set), `setCoverKey`, `retire` |
+| `LoanRepository` | `find` (Q5), `search` (Q6), `unreturnedItemsOfMember` (Q7), `overdueItems` (Q8), `saveLending` (préstamo + libros, una transacción), `saveReturn` |
+| `MemberRepository` | `find`, `search`, `documentExists`, `insert`, `activeLoans` |
+| `UserRepository` | `findByUsername` (Q10), `insert` |
+| `CategoryReader` | `all` (Q4), `find`: lectura de las cinco categorías sembradas |
+| `ReportReader` | `mostBorrowed`: consulta agregada del reporte (Q9) |
 | `Clock`, `PasswordHasher`, `TokenIssuer`, `CoverStorage` | servicios externos |
 
 ### 2.6 Eventos de dominio
@@ -110,7 +112,8 @@ dentro de la misma transacción.
 | Agregados, objetos de valor, política, errores | `src/Domain/` | PHP puro: sin `Illuminate`, Eloquent ni Carbon (Art. I) |
 | Casos de uso (uno por servicio) y puertos | `src/Application/` | Solo conoce `Domain` (Art. II) |
 | Controladores, requests, middleware, mapeo de errores | `src/Adapters/Inbound/Http/` | Delgados: validan formato, llaman al servicio, devuelven JSON |
-| Modelos Eloquent y repositorios | `src/Adapters/Outbound/Persistence/` | **Modelos de persistencia**, no entidades: se traducen a agregados con mapeadores |
+| Repositorios | `src/Adapters/Outbound/Persistence/` | Consultas con el Query Builder de Laravel (sin modelos Eloquent); cada fila se traduce a un agregado |
+| Comando de arranque del admin | `src/Adapters/Inbound/Console/` | `php artisan library:bootstrap-admin` (D-10) |
 | Hash, JWT, portadas, reloj | `src/Adapters/Outbound/{Security,Storage,Time}/` | Implementan puertos |
 | Enlace puerto → adaptador | `src/Bootstrap/Composition/PortBindings.php` | Único lugar que instancia infraestructura (Art. III) |
 
