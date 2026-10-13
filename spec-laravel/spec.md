@@ -1,4 +1,4 @@
-    # Especificación — Manager Library
+# Especificación — Manager Library
 
 **Qué se construye y por qué.** Un sistema para que una biblioteca pequeña lleve su catálogo de libros,
 sus socios y sus préstamos, y vea qué libros se prestan más.
