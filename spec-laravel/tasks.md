@@ -32,3 +32,37 @@ Cada tarea termina cuando su **evidencia** existe y se puede ejecutar (artículo
 
 Quien llegue a T-17 con evidencia tiene el **núcleo** hecho. T-18 a T-23 son lo que separa un trabajo bueno de uno sobresaliente. Se evalúa
 el desempeño con SDD, no la cantidad de tareas: una tarea con evidencia vale más que tres a medias.
+
+---
+
+## Estado real y evidencia (13 de octubre de 2026)
+
+Estado de cada tarea al cierre de la prueba, con la evidencia que se puede ejecutar. Repositorios: `api` = [test-manager-library-3145556-api](https://github.com/DIEGO-ALVARADO07/test-manager-library-3145556-api), `app`, `infra`, `tool` y `page` siguen el mismo patrón en la misma cuenta.
+
+| # | Estado | Evidencia |
+|---|---|---|
+| T-01 | Hecha | `GET /api/v1/health` y `GET /health` responden `{"status":"ok"}` — `api/tests/Contract/AuthTest.php`; el contenedor arranca con `docker compose up` (T-20) |
+| T-02 | Hecha | `api/database/migrations/2026_10_13_000002_create_initial_tables.php`; `api/tests/Integration/SchemaTest.php` reproduce las consultas de `data-model.md` §10: seis tablas, ninguna columna con `DEFAULT`, cinco categorías con los UUID fijos |
+| T-03 | Hecha | `api/tests/Unit/ValueObjectsTest.php` |
+| T-04 | Hecha | `api/tests/Unit/BookTest.php` |
+| T-05 | Hecha | `api/tests/Unit/LoanTest.php` (estado con reloj fijo) |
+| T-06 | Hecha | `api/tests/Unit/UserTest.php`; el rol `admin` por API responde 422 en `api/tests/Contract/AuthTest.php` |
+| T-07 | Parcial | `LoginService` y `CreateLibrarianService` se prueban por contrato contra PostgreSQL real (`AuthTest.php`), no contra fakes |
+| T-08 | Parcial | HU-03 y HU-04 se prueban por contrato (`BooksTest.php`), no contra fakes |
+| T-09 | Hecha | `api/tests/Application/LendAndReturnTest.php` (fakes) y `api/tests/Contract/LoansTest.php` |
+| T-10 | Hecha | Devolver contra fakes (`LendAndReturnTest.php`); vencidos y `ITEM_ALREADY_RETURNED` por contrato (`LoansTest.php`) |
+| T-11 | Hecha | `api/tests/Contract/ReportTest.php`: el título viejo se conserva tras renombrar (ADR-004); sin fakes |
+| T-12 | Hecha | Repositorios probados contra PostgreSQL real por `Contract` e `Integration` |
+| T-13 | Hecha | `api/tests/Concurrency/LastCopyTest.php`: dos procesos simultáneos sobre el último ejemplar, uno gana y el otro recibe `BOOK_NOT_AVAILABLE`; cinco compiten por dos |
+| T-14 | Parcial | Argon2id y JWT implementados; ninguna respuesta incluye `password` ni `password_hash` (`AuthTest.php`). No se auditaron los logs |
+| T-15 | Hecha | `api/tests/Contract/BooksTest.php`: PNG válido, archivo de 3 MB → 422, no imagen → 422, sin portada → `cover_key` nulo |
+| T-16 | Hecha | `api/tests/Contract/`: recorre todas las rutas y los 14 códigos de error de `api-contract.md` §2 |
+| T-17 | Hecha | `docker compose up` con base vacía migra, crea el admin desde el entorno y permite iniciar sesión (verificado con el sembrador) |
+| T-18 | Hecha | `api/database/migrations/2026_10_13_000003_add_remaining_check_constraints.php`; `SchemaTest.php` comprueba que el motor rechaza total 0 y rol desconocido; §4 de `data-model.md` actualizado |
+| T-19 | Hecha | `api/tests/Architecture/LayersTest.php` (Pest Arch) |
+| T-20 | Hecha | `infra/docker-compose.yml`: `db` (postgres:16 vacío, sin scripts de inicio), `api` y `app`; `curl localhost:8000/api/v1/health` responde `ok` |
+| T-21 | Hecha | `tool/seed/run-all.sh`: `/loans/overdue` devuelve **3** líneas, hay 15 préstamos y 19 filas en el reporte; RNF-1: con 5 000 libros la búsqueda tiene p95 de 78 ms |
+| T-22 | Hecha | Recorrido en navegador: login, catálogo y vencidos verificados contra la API real; el resto de pantallas está cubierto por los tests de la API |
+| T-23 | Hecha | `page/index.html` abre sin backend y se revisó a 375 px y a 1280 px |
+
+Pendiente declarado: ejecutar los tests de T-07, T-08 y T-11 contra fakes, y auditar los logs para RNF-3.
