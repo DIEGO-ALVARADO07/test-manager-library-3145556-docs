@@ -23,6 +23,28 @@ Las decisiones tomadas están en [`decisiones-y-huecos.md`](decisiones-y-huecos.
 | I-15 | `Loan.AddItem` modifica dos agregados (`Loan` y `Book`) en una sola operación | `architecture.md` §3 | Se hizo así, dentro de una transacción, como describe el spec (ver `spec-php/ddd.md` §2.1) | Separar con un servicio de dominio que coordine la retirada de ejemplares |
 | I-16 | El tope de 3 libros por socio no se puede imponer con un `CHECK`; dos préstamos simultáneos del mismo socio podrían superarlo | `data-model.md` §4, RNF-2 | No se cubre: RNF-2 solo habla del último ejemplar | Bloquear la fila del socio (`SELECT ... FOR UPDATE`) durante el préstamo, o añadir una restricción en el motor |
 
+### Consecuencias de seguir el spec al pie de la letra
+
+| # | Incongruencia o error | Dónde | Qué se hizo (sin tocar el spec) | Cómo corregirlo |
+|---|---|---|---|---|
+| I-17 | Con dos o más ejemplares, dos préstamos simultáneos pueden hacer que uno reciba 409 `BOOK_NOT_AVAILABLE` aunque todavía quede un ejemplar. CA-06.3 reserva ese 409 para «sin ejemplares» | ADR-002 vs CA-06.3 | Se siguió ADR-002, que permite responder 409 sin reintentar | Aplicar la otra opción de ADR-002: reintentar una vez si el ejemplar sigue disponible |
+| I-18 | `days_late` no define si se redondea; una línea vencida hace pocas horas puede mostrar 0 días de retraso | spec CA-09.1, contrato §3.6 | Días completos, redondeando hacia abajo | Definir el redondeo en el contrato |
+
+## Agregados que el spec no pide
+
+Elementos que se añadieron durante el desarrollo y que **no** salen de la documentación inicial. Se dejan registrados para que el evaluador los distinga de lo exigido; no se amplió el alcance de negocio, pero sí la superficie técnica.
+
+| # | Qué se agregó | Qué dice el spec | Para dejarlo como exige el spec |
+|---|---|---|---|
+| A-01 | La API responde salud en `/health` **y** en `/api/v1/health` | T-01 dice `/health`; el contrato pone todo bajo `/api/v1` (I-03) | Dejar una sola de las dos rutas |
+| A-02 | Código de error `INTERNAL_ERROR` para fallas 5xx y 405 respondido como 404 `NOT_FOUND` | §2 no tiene esos códigos (I-06) | Quitar el código nuevo hasta que el contrato lo defina |
+| A-03 | Variable `CLOCK_OFFSET_DAYS` que desplaza el reloj de la API, usada por el sembrador | La API fecha con su reloj y T-21 pide vencidos solo por la API (I-02, ADR-006) | Quitar la variable y declarar T-21 como no realizable tal como está escrita |
+| A-04 | `/loans/overdue` paginado y `/categories` dentro del sobre `{items, page, size, total}` | El contrato no define esas formas (I-07) | Esperar a que el contrato las defina |
+| A-05 | Validaciones no escritas en el spec: `size > 50` → 422, `category_id` inexistente → 422, largo máximo de `q` y de `password` | El spec no las trae (I-11) | Quitarlas o pedir que el contrato las incluya |
+| A-06 | En la app, la pantalla «Bibliotecarios» y la edición del catálogo con portadas | T-22 lista login, catálogo, socios, prestar, devolver, vencidos y reporte | Vienen del plan de entrega, no del spec |
+| A-07 | `infra` publica PostgreSQL en el puerto 5432 del equipo | El spec pide motor vacío, red y volúmenes | Quitar el `ports` del servicio `db` |
+| A-08 | Fase `load` del sembrador con libros sintéticos | RNF-1 pide medir con el sembrador de `tool` | Se usa solo para la medición; no forma parte de los datos de demostración |
+
 ## Condiciones de la prueba
 
 La conexión a internet durante la prueba fue por **datos móviles propios del aprendiz**. Esto afectó las descargas de imágenes de Docker, de paquetes de Composer y de npm, pero no cambió ninguna decisión técnica.
